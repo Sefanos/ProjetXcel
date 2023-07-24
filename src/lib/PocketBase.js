@@ -1,9 +1,9 @@
 import PocketBase from "pocketbase";
 
 
-const pb = new PocketBase('http://127.0.0.1:8090');
+const pb = new PocketBase(import.meta.env.VITE_PB_URL);
 const RedirectUrl = "http://localhost:5173/";
-// await pb.admins.authWithPassword('a.zeta@upm.ac.ma', 'aminezeta66');
+
 pb.autoCancellation(false);
 export default pb;
 
