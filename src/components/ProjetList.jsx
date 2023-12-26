@@ -16,7 +16,6 @@ import { useNavigate } from 'react-router';
 import TransitionsModal from './ModalProject';
 import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 import Fab from '@mui/material/Fab';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
@@ -24,6 +23,7 @@ import UploadIcon from '@mui/icons-material/Upload';
 import Input from '@mui/material/Input';
 import { saveAs } from 'file-saver';
 import * as XLSX from "xlsx";
+import ModalEdit from './ModalEdit';
 
 
 const ProjetList = ({ highlightedRecordId }) => {
@@ -32,6 +32,7 @@ const ProjetList = ({ highlightedRecordId }) => {
   const [userCurrent, setUserCurrent] = useState('');
   const [importedData, setImportedData] = useState([]);
   const navigate = useNavigate();
+
 
   const fetchProjects = async () => {
     try {
@@ -80,7 +81,7 @@ const ProjetList = ({ highlightedRecordId }) => {
   }, []);
   
   const handleDeleteProject = async (event, projectId) => {
-    event.stopPropagation(); // Prevent click event propagation
+    event.stopPropagation(); 
 
     try {
       await deleteProject(projectId);
@@ -291,7 +292,8 @@ const ProjetList = ({ highlightedRecordId }) => {
                 >
                 <TableCell align="center">{getPriorityIcon(row.Priority)}</TableCell>
                 <TableCell align="center">{row.Nom}</TableCell>
-                <TableCell sx={{ width: '60%' }}>{row.Description}</TableCell>
+                <TableCell sx={{ width: '60%' , textAlign :'justify'}}>
+                <div style={{ whiteSpace: 'pre-line' }}>{row.Description}</div></TableCell>
                 <TableCell align="center" sx={{ width: '10%' }}>
                   <Typography variant="caption">{`${row.Progress}%`}</Typography>
                   <LinearProgress variant="determinate" value={row.Progress} />
@@ -308,9 +310,9 @@ const ProjetList = ({ highlightedRecordId }) => {
                         </IconButton>
                       </Tooltip>
                       <Tooltip title="Modifier" placement="right">
-                        <IconButton onClick={(event) => event.stopPropagation()}>
-                          <EditIcon style={{ color: 'green' }} />
-                        </IconButton>
+                      <div>
+                        <ModalEdit taskData={row} />
+                      </div>
                       </Tooltip>
                     </>
                   )}

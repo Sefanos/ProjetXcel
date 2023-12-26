@@ -169,13 +169,14 @@ export default function PrimarySearchAppBar({onSearchQuery ,onSearchSubmit }) {
     <Box position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
       <AppBar>
         <Toolbar>
+        <img src="/logoPX.png" width={50} height={50} style={{ marginRight: '10px' }}/>
           <Typography
             variant="h6"
             noWrap
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
-            Projet Management
+            P R O J E T X C E L
           </Typography>
           {(isProjectsPage || isUsersPage) && (
             <Search>

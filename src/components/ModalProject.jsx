@@ -7,6 +7,8 @@ import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import Stack from '@mui/material/Stack';
+import Fab from '@mui/material/Fab';
+
 
 const style = {
   position: 'absolute',
@@ -29,9 +31,9 @@ export default function TransitionsModal() {
   return (
     <div>
       <Stack direction="row" justifyContent="center" sx={{ margin: 3 }} spacing={2}>
-        <Button variant="contained" onClick={handleOpen} endIcon={<AddIcon />}>
-          Ajouter un Projet
-        </Button>
+        <Fab color="primary"  variant="contained" onClick={handleOpen} aria-label="Add">
+          <AddIcon />
+        </Fab>
       </Stack>
       <Modal
         aria-labelledby="transition-modal-title"

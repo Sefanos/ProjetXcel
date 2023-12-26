@@ -3,6 +3,7 @@ import Sidebar from './Fixes/Sidebar'
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import MemberList from '../components/MemberList';
+// import PrivateMessaging from '../lib/PrivateMessaging';
 
 
 export default function Members() {
@@ -14,6 +15,7 @@ export default function Members() {
         <Toolbar />
       
         <MemberList />
+        {/* <PrivateMessaging /> */}
         
       </Box>
       </Box>

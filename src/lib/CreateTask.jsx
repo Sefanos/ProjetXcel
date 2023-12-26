@@ -11,6 +11,8 @@ import Divider from '@mui/material/Divider';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
+import Input from '@mui/material/Input';
+import FormHelperText from '@mui/material/FormHelperText';
 import pb from './PocketBase';
 
 export default function CreateTask({ columnId , projectId , setIsTaskCreated }) {
@@ -20,10 +22,17 @@ export default function CreateTask({ columnId , projectId , setIsTaskCreated }) 
   const [collaborateur, setCollaborateur] = useState([]);
   const [Collaborateur, setSelectedCollaborateur] = useState('');
   const [selectedDate, setSelectedDate] = useState(null);
+  const [file, setFile] = useState(null);
+
+
+  const handleFileChange = (event) => {
+    const uploadedFile = event.target.files[0];
+    setFile(uploadedFile);
+  };
   
 
-
   const handleDateChange = (date) => {
+    console.log(date)
     setSelectedDate(date);
   };
   const handleCollaborateurChange = (event) => {
@@ -48,42 +57,56 @@ export default function CreateTask({ columnId , projectId , setIsTaskCreated }) 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-
+  
     if (!title || !description || !priorite || !selectedDate || !Collaborateur) {
       window.alert('Veuillez remplir tous les champs requis');
       return;
     }
   
-    // Create a new record in PocketBase
-    const data = {
-      title : title,
-      description :description ,
-      priorite : priorite,
-      dateDecheance: selectedDate ? selectedDate.toDate() : null,
-      collaborateurId : Collaborateur,
-      columnId :columnId ,
-      ProjectId :projectId ,
-    };
-
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('description', description);
+    formData.append('priorite', priorite);
+    
+    // Check if a file is selected before appending
+    if (file) {
+      formData.append('media', file);
+    }
+  
+    // Check if selectedDate is a valid Date object
+    const validSelectedDate = new Date(selectedDate);
+    if (validSelectedDate instanceof Date && !isNaN(validSelectedDate)) {
+      const formattedDate = validSelectedDate.toISOString().split('T')[0]; // Extracting only the date part
+      formData.append('dateDecheance', formattedDate);
+    } else {
+      window.alert('Veuillez sélectionner une date valide');
+      return;
+    }
+  
+  
+    formData.append('collaborateurId', Collaborateur);
+    formData.append('columnId', columnId);
+    formData.append('ProjectId', projectId);
+  
     try {
-      await pb.collection('Tasks').create(data);
-      console.log('Record created:', data);
-      
- // Call the onTaskCreated callback
-     
+      // Use PocketBase SDK or API to create a new record with formData
+      await pb.collection('Tasks').create(formData);
+      console.log('Record created:', formData);
+  
       // Reset form fields
       setTitle('');
       setDescription('');
       setSelectedDate(null);
       setPriorite('');
       setSelectedCollaborateur('');
-
+      setFile(null);
+  
       setIsTaskCreated(true);
     } catch (error) {
       console.error('Error creating record:', error);
     }
   };
+  
 
   useEffect(() => {
     const fetchCollaborateur = async () => {
@@ -169,15 +192,30 @@ export default function CreateTask({ columnId , projectId , setIsTaskCreated }) 
               onChange={(e) => setDescription(e.target.value)}
             />
             <Stack>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DemoContainer components={['DatePicker']}>
-                  <DatePicker
-                    label="Date De Realisation"
-                    value={selectedDate}
-                    onChange={handleDateChange}
-                  />
-                </DemoContainer>
-              </LocalizationProvider>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+  <DemoContainer components={['DatePicker']}>
+    <DatePicker
+      label="Date De Realisation"
+      value={selectedDate}
+      onChange={handleDateChange}
+      renderInput={(params) => <TextField {...params} />}
+      inputFormat="YYYY-MM-DD" // Set the format to display in the input
+      // other necessary props
+    />
+  </DemoContainer>
+</LocalizationProvider>
+              <FormControl sx={{ m: 1, width: '25ch' }}>
+          <Input
+            id="file-upload"
+            type="file"
+            sx={{ display: 'block'}}
+            inputProps={{
+              accept: '.pdf,.doc,.docx,.jpg,.jpeg,.png',
+              onChange: handleFileChange,
+            }}
+          />
+          <FormHelperText>Select a file (.pdf, .docx, .jpg, .png)</FormHelperText>
+        </FormControl>
           </Stack>
           </Stack>
         </div>

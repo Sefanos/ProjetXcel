@@ -10,6 +10,7 @@ import RunningWithErrorsIcon from '@mui/icons-material/RunningWithErrors';
 import Calendar from './Calender';
 import styled from '@emotion/styled';
 import {OverdueTasks, OverdueProjects ,fetchTasks , fetchProjects} from '../lib/Overdue';
+import ProjectChart from '../lib/ProjectChart';
 
 const Circle = styled('div')({
     width: '100px',
@@ -74,7 +75,7 @@ export default function Dashboard() {
                alignItems="start"
                spacing={1}
        >
-       <Card sx={{ minWidth: 400 }}>
+       <Card sx={{ minWidth: 350 }}>
          <CardContent>
          <ArticleIcon style={{float: 'right'}} />
            <Typography gutterBottom variant="h5" component="div">
@@ -92,15 +93,22 @@ export default function Dashboard() {
        </Card>
        <Card sx={{ minWidth: 400 }}>
          <CardContent>
-           <RunningWithErrorsIcon style={{float: 'right'}} />
-         <h2>Projets en retard</h2>
-         <Divider />
-           <OverdueProjects />
+         <ProjectChart />
          </CardContent>
        </Card>
        <Card sx={{ maxWidth: 345 }}>
          <CardContent>
            <Calendar />
+         </CardContent>
+       </Card>
+       </Stack>
+       <Stack>
+       <Card sx={{ minWidth: 400 }}>
+         <CardContent>
+           <RunningWithErrorsIcon style={{float: 'right'}} />
+         <h2>Projets en retard</h2>
+         <Divider />
+           <OverdueProjects />
          </CardContent>
        </Card>
        </Stack>

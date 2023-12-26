@@ -8,6 +8,8 @@ import Divider from '@mui/material/Divider';
 const TaskDetails = ({ task }) => {
   const [collaboratorName, setCollaboratorName] = useState('');
 
+  const DownloadUrl ="http://127.0.0.1:8090/api/files/Tasks/" + task.id + "/" + task.Media;
+
   const getPriorityColor = (priority) => {
     if (priority === 'high') {
       return { color: 'red', contrastText: '#fff' };
@@ -39,13 +41,13 @@ const TaskDetails = ({ task }) => {
   }, [task.collaborateur]);
 
   return (
-    <Box sx={{ marginTop: '20px', marginLeft: '20px' }}>
+    <Box sx={{margin: '5px' }}>
       <Typography variant="h5" align="center">Tache Détails</Typography>
       < Divider />
       <div style={{ marginTop: '20px' }}>
         <strong>Task:</strong> {task.Task}
       </div>
-      <div style={{ marginTop: '10px' }}>
+      <div style={{ marginTop: '10px' , textAlign : 'justify' }}>
         <strong>Description:</strong> {task.Description}
       </div>
       <div style={{ marginTop: '10px' }}>
@@ -61,7 +63,57 @@ const TaskDetails = ({ task }) => {
       <div style={{ marginTop: '10px' }}>
         <strong>Collaborateur:</strong> {collaboratorName}
       </div>
-      {/* Add more task details as needed */}
+      {task.Media && (
+    <div style={{ marginTop: '10px' }}>
+      <strong>Media:</strong> 
+      {/* Create download link for supported file types */}
+      {task.Media.endsWith('.pdf') && (
+      <a href={DownloadUrl} target='_blank' download style={{padding:'5px' ,textDecoration : 'none' }}>
+         Télécharger PDF ici
+      </a>
+      )}
+      {task.Media.endsWith('.doc') && (
+        <a href={DownloadUrl} target='_blank' download style={{padding:'5px' ,textDecoration : 'none' }}>
+           Télécharger Doc ici
+        </a>
+      )}
+      {task.Media.endsWith('.docx') && (
+        <a href={DownloadUrl} target='_blank' download style={{ padding:'5px' ,textDecoration : 'none' }}>
+           Télécharger Docx ici
+        </a>
+      )}
+      {task.Media.endsWith('.jpg') && (
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <div style={{ position: 'relative' }}>
+            <img src={DownloadUrl} alt="Image" style={{ maxWidth: '200px', maxHeight: '200px', display: 'block' }} />
+          </div>
+          <a href={DownloadUrl} target='_blank' download style={{ position: 'absolute', bottom: '5px' , textDecoration : 'none' }}>
+              Télécharger ici
+          </a>
+        </div>
+      )}
+      {task.Media.endsWith('.jpeg') && (
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div style={{ position: 'relative' }}>
+          <img src={DownloadUrl} alt="Image" style={{ maxWidth: '200px', maxHeight: '200px', display: 'block' }} />
+        </div>
+        <a href={DownloadUrl} target='_blank' download style={{ position: 'absolute', bottom: '5px' , textDecoration : 'none' }}>
+            Télécharger ici
+        </a>
+      </div>
+      )}
+      {task.Media.endsWith('.png') && (
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div style={{ position: 'relative' }}>
+          <img src={DownloadUrl} alt="Image" style={{ maxWidth: '200px', maxHeight: '200px', display: 'block' }} />
+        </div>
+        <a href={DownloadUrl} target='_blank' download style={{ position: 'absolute', bottom: '5px' , textDecoration : 'none' }}>
+            Télécharger ici
+        </a>
+      </div>
+      )}
+    </div>
+  )}
     </Box>
   );
 };

@@ -6,7 +6,7 @@ export const fetchTasks = async (projectId, userRole, userCurrent) => {
   try {
     let records = [];
 
-    if (userRole === "Directeur") {
+    if (userRole === "Directeur" || userRole === "ChefDeProjet") {
       // Fetch all tasks for "Directeur" user
       records = await tasksCollection.getFullList();
     } else if (userRole === "Collaborateur") {
@@ -19,11 +19,13 @@ export const fetchTasks = async (projectId, userRole, userCurrent) => {
     const data = records.map((record) => ({
       id: record.id,
       Task: record.title,
+      ProjectId : record.ProjectId,
       Description: record.description,
       Priority : record.priorite,
       Due_Date: record.dateDecheance,
       columnId: record.columnId,
       collaborateur: record.collaborateurId,
+      Media : record.media ,
     }));
 
     return data;

@@ -13,6 +13,7 @@ import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import Alert from '@mui/material/Alert';
+import Divider from '@mui/material/Divider';
 
 export default function MemberList() {
   const [members, setMembers] = useState([]);
@@ -22,6 +23,7 @@ export default function MemberList() {
   const [role, setRole] = useState('');
   const [loading, setLoading] = useState(false);
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
+  const [memberTasks , setMembertasks] = useState(null);
 
   const handleNomChange = (event) => {
     setNom(event.target.value);
@@ -89,20 +91,61 @@ export default function MemberList() {
     fetchMembers();
   }, []);
 
+useEffect(() => {
+  const fetchTasksMembers = async () => {
+    try {
+      const TasksMembers = await pb.collection('Tasks').getFullList();
+      setMembertasks(TasksMembers);
+      console.log(TasksMembers);
+    } catch (error) {
+      console.error('Error fetching:', error);
+    }
+  };
+
+  fetchTasksMembers();
+}, []);
+
+
   return (
     <>
       <Box display="flex" direction="row" gap={20}>
-        <div style={{ width: '400px' }}>
+        <div style={{ width: '600px' }}>
           <Typography variant="h4" component="h2" gutterBottom>
             Liste des membres
           </Typography>
           <List>
-            {members.map((member) => (
-              <ListItem key={member.id}>
-                <ListItemText primary={member.nom} secondary={member.role} />
-              </ListItem>
-            ))}
-          </List>
+      {members.map((member, index) => (
+        <React.Fragment key={member.id}>
+          <ListItem>
+            <Grid container alignItems="center" spacing={2}>
+              <Grid item xs={3}>
+                <ListItemText
+                  primary={member.nom}
+                  secondary={member.role}
+                />
+              </Grid>
+              <Grid item xs={8}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                  {memberTasks &&
+                    memberTasks
+                      .filter((task) => task.collaborateurId === member.id)
+                      .map((task, taskIndex) => (
+                        <React.Fragment key={task.id}>
+                          <Typography variant="body2">
+                            Tache {taskIndex+1} : {task.title}
+                          </Typography>
+                          {taskIndex !== memberTasks.length - 1 && <Divider />}
+                        </React.Fragment>
+                      ))
+                  }
+                </Box>
+              </Grid>
+            </Grid>
+          </ListItem>
+          {index !== members.length - 1 && <Divider />}
+        </React.Fragment>
+      ))}
+    </List>
         </div>
         {pb.authStore.model.role === 'Directeur' && (
         <div style={{ width: '400px' }}>

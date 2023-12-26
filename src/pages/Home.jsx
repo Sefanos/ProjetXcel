@@ -3,8 +3,7 @@ import Sidebar from './Fixes/Sidebar'
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import MyComponent from '../test';
-import Dashboard from '../components/Dashboard'
-
+import Dashboard from '../components/Dashboard';
 
 export default function Home() {
   return (

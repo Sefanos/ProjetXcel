@@ -5,8 +5,7 @@ import Projects from './pages/ProjetsPage';
 import Members from './pages/MembersPage';
 import Tasks from './pages/TasksPage';
 import Login from './pages/Login';
-import {isUserValid} from './lib/PocketBase';
-
+import {isUserValid}  from './lib/PocketBase';
 
 
 const App = () => {

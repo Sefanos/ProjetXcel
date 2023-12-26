@@ -18,6 +18,7 @@
   import Box from '@mui/material/Box';
   import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
   import Tooltip from '@mui/material/Tooltip';
+  import { logUserActivity } from '../lib/LogActivity';
   
 
   const style = {
@@ -168,6 +169,7 @@
         try {
           await pb.collection('Tasks').update(taskId, updatedTask);
           console.log('Task updated in the database');
+          logUserActivity(pb.authStore.model.id , 'Task updated' , projectId , taskId);
         } catch (error) {
           console.error('Error updating task in the database:', error);
         }
@@ -179,6 +181,7 @@
         // Delete the task from the database
         await pb.collection('Tasks').delete(taskId);
         console.log('Task deleted from the database');
+        logUserActivity(pb.authStore.model.id , 'Task deleted')
   
         // Update the state to remove the task from the columns
         setColumns((prevColumns) => {
@@ -195,6 +198,8 @@
   
     
     const deleteColumn = async (columnId) => {
+      const confirmed = window.confirm('êtes-vous sûr de vouloir supprimer cette tâche ?');
+      if(confirmed){
       // Create a copy of the columns object
       const updatedColumns = { ...columns };
     
@@ -213,6 +218,7 @@
           taskIds.map((taskId) => pb.collection('Tasks').delete(taskId))
         );
         console.log('Tasks deleted from the database');
+        logUserActivity(pb.authStore.model.id , 'Tasks deleted')
     
         // Delete the column from the database
         await pb.collection('Columns').delete(columnId);
@@ -223,6 +229,7 @@
     
       // Update the state with the updatedColumns object
       setColumns(updatedColumns);
+    }
     };
     
     

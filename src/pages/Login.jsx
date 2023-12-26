@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import TextField from '@mui/material/TextField';
 import Container from '@mui/material/Container';
-import { login } from '../lib/PocketBase';
+import pb, { login } from '../lib/PocketBase';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -16,6 +16,7 @@ import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Footer from './Fixes/Footer';
+import { logUserActivity } from '../lib/LogActivity';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -46,7 +47,7 @@ export default function Login() {
     try {
       setLoading(true);
       await login(email, password);
-      console.log('Logged in successfully!');
+      logUserActivity(pb.authStore.model.id ,'Logged in');
       setLoading(false);
     } catch (error) {
       window.alert("Échec de l'authentification. Veuillez réessayer.");

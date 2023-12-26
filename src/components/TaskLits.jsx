@@ -58,7 +58,7 @@ const TaskCard = ({ item, index, columnId , handleDeleteTask }) => {
 
   const handleDelete = async (event) => {
     event.stopPropagation();
-    const confirmed = window.confirm('Are you sure you want to delete this task?');
+    const confirmed = window.confirm('êtes-vous sûr de vouloir supprimer cette tâche ?');
     if (confirmed) {
       handleDeleteTask(item.id);
       handleClose();
@@ -80,15 +80,18 @@ const TaskCard = ({ item, index, columnId , handleDeleteTask }) => {
                 <p>
                   <span>
                     {new Date(item.Due_Date).toLocaleDateString('en-us', {
+                      year: 'numeric',
                       month: 'short',
                       day: '2-digit',
                     })}
                   </span>
                 </p>
                 {pb.authStore.model.role === 'Directeur' && (
+                  <>
                 <IconButton onClick={(event) => handleDelete(event)}>
                   <DeleteIcon />
                 </IconButton>
+                  </>                
                 )}
               </div>
             </TaskInformation>
