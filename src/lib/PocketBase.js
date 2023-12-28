@@ -1,7 +1,7 @@
 import PocketBase from "pocketbase";
 
-
-const pb = new PocketBase(import.meta.env.VITE_PB_URL);
+const URL = import.meta.env.VITE_PB_URL;
+const pb = new PocketBase(URL);
 const RedirectUrl = "http://localhost:5173/";
 
 pb.autoCancellation(false);
