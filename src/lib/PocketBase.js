@@ -2,7 +2,7 @@ import PocketBase from "pocketbase";
 
 const URL = import.meta.env.VITE_PB_URL;
 const pb = new PocketBase(URL);
-const RedirectUrl = "http://localhost:5173/";
+const RedirectUrl = "https://projet-xcel.vercel.app/";
 
 pb.autoCancellation(false);
 export default pb;
