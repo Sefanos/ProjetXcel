@@ -159,6 +159,8 @@ export default function Login() {
           </Box>
         </Container>
 
+        User demo account : guest@test.com:123456789
+
         <Footer />
       </Box>
     </>
